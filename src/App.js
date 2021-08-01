@@ -10,15 +10,15 @@ const App = (props) => {
     setUserLoggedIn(!userLoggedIn)
   }
 
+  // checking for token in localstorage
   useEffect(() => {
     if (localStorage.getItem('token')) {
       handleAuth()
     }
   }, [])
-  
+
   return (
     <div className='container p-3'>
-     
       <NavBar loggedIn={userLoggedIn} handleAuth={handleAuth} />
     </div>
   )
