@@ -43,6 +43,7 @@ const Register = (props) => {
 
         registerValidation()
         if (Object.keys(error).length === 0) {
+            
             setFormError({})
 
             const formData = {
