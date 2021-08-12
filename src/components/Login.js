@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { startLogin } from '../actions/authActions'
 
 const Login = (props) => {
     const { handleAuth } = props
+    const dispatch = useDispatch()
     const [loginEmail, setLoginEmail] = useState('')
     const [loginPassword, setLoginPassword] = useState('')
     const [formError, setFormError] = useState({})
@@ -32,33 +34,21 @@ const Login = (props) => {
     // submit Handler
     const handleSubmit = (event) => {
         event.preventDefault()
-
         validation()
-
         if (Object.keys(error).length === 0) {
-
             setFormError({})
-
             const formData = {
                 email: loginEmail,
                 password: loginPassword
             }
 
-            axios.post('https://dct-user-auth.herokuapp.com/users/login', formData)
-                .then((response) => {
-                    const result = response.data
-                    if (result.hasOwnProperty('errors')) {
-                        alert(result.errors)
-                    } else {
-                        alert('you have successfully Logged In')
-                        localStorage.setItem('token', result.token)
-                        props.history.push('/')
-                        handleAuth()
-                    }
-                })
-                .catch((err) => {
-                    alert(err)
-                })
+            // after login redirection functionality
+            const redirection = () => {
+                props.history.push('/')
+            }
+
+            //dispacting the action
+            dispatch(startLogin(formData, redirection, handleAuth))
 
         } else {
             setFormError(error)
@@ -74,7 +64,7 @@ const Login = (props) => {
     }
 
     return (
-        <div style={{width:'600px'}} className='p-5 align-item-center'>
+        <div style={{ width: '600px' }} className='p-5 align-item-center'>
 
             <h3 className='my-4'>Login to your accout</h3>
             <form onSubmit={handleSubmit}>

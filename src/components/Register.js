@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-
+import { useDispatch } from 'react-redux'
+import { asyncRegistration } from '../actions/authActions'
 
 const Register = (props) => {
+    const dispatch = useDispatch()
     const [userName, setUserName] = useState('')
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [formError, setFormError] = useState({})
     const error = {}
-
-
-
 
     // form control input handler
     const handleChange = (event) => {
@@ -43,28 +41,20 @@ const Register = (props) => {
 
         registerValidation()
         if (Object.keys(error).length === 0) {
-            
             setFormError({})
-
             const formData = {
                 username: userName,
                 email: userEmail,
                 password: userPassword
             }
 
-            axios.post('http://dct-user-auth.herokuapp.com/users/register', formData)
-                .then((response) => {
-                    const result = response.data
-                    if (result.hasOwnProperty('errors')) {
-                        alert(result.message)
-                    } else {
-                        alert('you have Successfully Registered')
-                        props.history.push('/login')
-                    }
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            // redirection functionality 
+            const redirection = () => {
+                props.history.push('/login')
+            }
+
+            // Dispatching action
+            dispatch(asyncRegistration(formData, redirection))
 
         } else {
             setFormError(error)
@@ -79,9 +69,8 @@ const Register = (props) => {
         setUserPassword('')
     }
 
-
     return (
-        <div style={{width:'600px'}} className='align-middle p-5'>
+        <div style={{ width: '600px' }} className='align-middle p-5'>
             <h2 className='text-capitalize mb-4'>register with us</h2>
 
             <form onSubmit={handleSubmit}>
