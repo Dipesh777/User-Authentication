@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { asyncviewNote, asyncDeleteNote } from '../../actions/notesActions'
 import axios from 'axios'
-import swal from 'sweetalert'
 import AddForm from './AddForm'
 
 const NotesItem = (props) => {
-    const { _id, title, body, removeItem, EditNote } = props
+    const { _id, title, body, EditNote } = props
     const [edit, setEdit] = useState(false)
 
+    const dispatch = useDispatch()
 
     const toggle = () => {
         setEdit(!edit)
@@ -31,6 +33,7 @@ const NotesItem = (props) => {
             .catch((err) => {
                 alert(err.message)
             })
+
     }
 
 
@@ -38,31 +41,13 @@ const NotesItem = (props) => {
     const deleteItem = () => {
         const deleteConfirm = window.confirm('Are you Sure?')
         deleteConfirm && (
-            axios.delete(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, { headers: { 'x-auth': localStorage.getItem('token') } })
-                .then((response) => {
-                    const result = response.data
-                    removeItem(result._id)
-                })
-                .catch((err) => {
-                    alert(err.message)
-                })
+            dispatch(asyncDeleteNote(_id))
         )
     }
 
     // sweet alert
-    const viewNote = () => {
-
-        axios.get(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, { headers: { 'x-auth': localStorage.getItem('token') } })
-            .then((response) => {
-                const result = response.data
-                swal({
-                    title: result.title,
-                    text: result.body
-                })
-            })
-            .catch((err) => {
-                alert(err)
-            })
+    const showNote = () => {
+        dispatch(asyncviewNote(_id))
     }
 
 
@@ -71,7 +56,7 @@ const NotesItem = (props) => {
         <>
             {edit ? <AddForm submitForm={submitForm} title={title} body={body} /> : (
                 <div className='d-flex justify-content-between align-items-center  border my-3 py-2 px-4'>
-                    <h1 onClick={viewNote} className='small flex-grow'>{title}</h1>
+                    <h1 onClick={showNote} className='small flex-grow'>{title}</h1>
                     <div className='d-flex'>
                         <button className='bg-warning  mx-2' onClick={EditItem}>Edit</button>
                         <button className='bg-danger text-white' onClick={deleteItem}>Delete</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import NotesList from './NotesList'
 import AddNotes from './AddNotes'
@@ -6,11 +6,11 @@ import { startGetNotes } from '../../actions/notesActions'
 
 const NotesContainer = (props) => {
 
-    const notes = useSelector((state) => {
+    const userNotes = useSelector((state) => {
         return state.userNotes
     })
-    const [userNotes, setUserNotes] = useState([])
-    // console.log(userNotes)
+
+    console.log(userNotes)
     const dispatch = useDispatch()
 
 
@@ -21,17 +21,7 @@ const NotesContainer = (props) => {
             props.history.push('./login')
         }
         dispatch(startGetNotes(errorRedirect))
-        setUserNotes([...notes])
-    }, [notes])
-
-
-    // Removing Deleted Notes
-    const removeItem = (id) => {
-        const deleted = userNotes.filter((note) => {
-            return note._id !== id
-        })
-        // setUserNotes(deleted)
-    }
+    }, [])
 
     // Edit Notes functionality
     const EditNote = (data) => {
@@ -50,7 +40,7 @@ const NotesContainer = (props) => {
 
     return (
         <div className='d-flex'>
-            <NotesList removeItem={removeItem} EditNote={EditNote} />
+            <NotesList EditNote={EditNote} />
             <AddNotes />
         </div>
     )
