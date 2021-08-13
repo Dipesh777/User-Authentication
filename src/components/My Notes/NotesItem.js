@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { asyncviewNote, asyncDeleteNote } from '../../actions/notesActions'
-import axios from 'axios'
+import { asyncviewNote, asyncDeleteNote, asyncEditNote } from '../../actions/notesActions'
 import AddForm from './AddForm'
 
 const NotesItem = (props) => {
-    const { _id, title, body, EditNote } = props
+    const { _id, title, body } = props
     const [edit, setEdit] = useState(false)
 
     const dispatch = useDispatch()
@@ -19,21 +18,9 @@ const NotesItem = (props) => {
         toggle()
     }
 
+    // Edit Functionality by getting update formData
     const submitForm = (formData) => {
-        axios.put(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, formData, {
-            headers: {
-                "x-auth": localStorage.getItem('token')
-            }
-        })
-            .then((response) => {
-                const result = response.data
-                EditNote(result)
-                toggle()
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
-
+        dispatch(asyncEditNote(formData, _id, toggle))
     }
 
 

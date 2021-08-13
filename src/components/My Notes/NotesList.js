@@ -4,7 +4,6 @@ import NotesItem from './NotesItem'
 
 
 const NotesList = (props) => {
-    const { EditNote } = props
 
     const userNotes = useSelector((state) => {
         return state.userNotes
@@ -24,7 +23,7 @@ const NotesList = (props) => {
                         </>
                     ) : (
                         userNotes.map((note) => {
-                            return <NotesItem key={note._id} {...note} EditNote={EditNote} />
+                            return <NotesItem key={note._id} {...note} />
                         })
                     )
                 }

@@ -92,3 +92,30 @@ export const asyncDeleteNote = (_id) => {
             })
     }
 }
+
+
+// action for Editing existing Note async update call using put method
+export const EDIT_NOTE = 'EDIT_NOTE'
+const editNote = (data) => {
+    return {
+        type: EDIT_NOTE,
+        payload: data
+    }
+}
+export const asyncEditNote = (formData, _id, toggle) => {
+    return (dispatch) => {
+        axios.put(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, formData, {
+            headers: {
+                "x-auth": localStorage.getItem('token')
+            }
+        })
+            .then((response) => {
+                const result = response.data
+                dispatch(editNote(result))
+                toggle()
+            })
+            .catch((err) => {
+                alert(err.message)
+            })
+    }
+}
