@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import NotesItem from './NotesItem'
 
 
 const NotesList = (props) => {
-    const { userNotes, removeItem, EditNote } = props
+    const { removeItem, EditNote } = props
+
+    const userNotes = useSelector((state) => {
+        return state.userNotes
+    })
 
     return (
         <div style={{ width: '700px' }} className='m-4'>
