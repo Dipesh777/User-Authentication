@@ -5,13 +5,18 @@ import Register from './Register'
 import Login from './Login'
 import Account from './Account'
 import NotesContainer from './My Notes/NotesContainer'
+import { useDispatch } from 'react-redux'
+import { startLogout } from '../actions/authActions'
 
 const NavBar = (props) => {
+    const dispatch = useDispatch()
+
     const { loggedIn, handleAuth } = props
 
     // Handling logout functinality
     const handleLogout = () => {
         localStorage.removeItem('token')
+        dispatch(startLogout())
         alert('successfully Logged out')
         handleAuth()
         props.history.push('/')

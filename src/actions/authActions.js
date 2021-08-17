@@ -69,3 +69,12 @@ export const asyncAccount = (redirect) => {
             })
     }
 }
+
+// user account loggout action 
+export const LOGOUT = 'LOGOUT'
+
+export const startLogout = () => {
+    return {
+        type: LOGOUT
+    }
+}

@@ -1,4 +1,5 @@
 import { GET_NOTES, NEW_NOTE, DELETE_NOTE, EDIT_NOTE } from '../actions/notesActions'
+import { LOGOUT } from '../actions/authActions'
 const intial = []
 
 const notesReducer = (state = intial, action) => {
@@ -13,6 +14,9 @@ const notesReducer = (state = intial, action) => {
             return state.filter((ele) => {
                 return ele._id !== action.payload
             })
+        }
+        case LOGOUT: {
+            return state = []
         }
         case EDIT_NOTE: {
             return state.map((ele) => {
