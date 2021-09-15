@@ -99,6 +99,9 @@ const Login = (props) => {
 
                 <button className='mx-2 text-white bg-secondary' onClick={cancelbtn}>Cancel</button>
             </form>
+            <h6 className='mt-5'>Demo Login ID and password</h6>
+            <p className='m-0'>Id - dipesh1@gmail.com</p>
+            <p>password - dipesh123</p>
         </div>
     )
 }

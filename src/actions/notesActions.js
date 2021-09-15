@@ -22,7 +22,9 @@ export const startGetNotes = (redirectError) => {
                 dispatch(getNote(result))
             })
             .catch((err) => {
-                alert(err.message)
+                swal(err.message, {
+                    icon: 'error'
+                })
                 redirectError()
             })
     }
@@ -42,15 +44,22 @@ export const asyncNewNote = (formData, resetForm) => {
             .then((response) => {
                 const result = response.data
                 if (result.hasOwnProperty('errors')) {
-                    alert(result.message)
+                    swal(result.message, {
+                        icon: 'error'
+                    })
                 } else {
                     dispatch(newNote(result))
+                    swal('Note Added Successfuly', {
+                        icon: 'success'
+                    })
                     resetForm()
                 }
 
             })
             .catch((err) => {
-                alert(err.message)
+                swal(err.message, {
+                    icon: 'error'
+                })
             })
     }
 }
@@ -67,7 +76,9 @@ export const asyncviewNote = (_id) => {
                 })
             })
             .catch((err) => {
-                alert(err)
+                swal(err.message, {
+                    icon: 'error'
+                })
             })
     }
 }
@@ -82,14 +93,30 @@ const deleteNote = (id) => {
 }
 export const asyncDeleteNote = (_id) => {
     return (dispatch) => {
-        axios.delete(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, { headers: { 'x-auth': localStorage.getItem('token') } })
-            .then((response) => {
-                const result = response.data
-                dispatch(deleteNote(result._id))
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover note",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    // Async call for Delete
+                    axios.delete(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, { headers: { 'x-auth': localStorage.getItem('token') } })
+                        .then((response) => {
+                            const result = response.data
+                            dispatch(deleteNote(result._id))
+                            swal("Note has been deleted", {
+                                icon: "success",
+                            });
+                        })
+                        .catch((err) => {
+                            alert(err.message)
+                        })
+                    // Async call for Delete
+                }
+            });
     }
 }
 
@@ -104,18 +131,39 @@ const editNote = (data) => {
 }
 export const asyncEditNote = (formData, _id, toggle) => {
     return (dispatch) => {
-        axios.put(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, formData, {
-            headers: {
-                "x-auth": localStorage.getItem('token')
-            }
+        swal({
+            title: "Are you sure?",
+            text: "You Want to Save Changes",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
         })
-            .then((response) => {
-                const result = response.data
-                dispatch(editNote(result))
-                toggle()
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
+            .then((willEdit) => {
+                if (willEdit) {
+
+                    // Async call for edit notes
+                    axios.put(`https://dct-user-auth.herokuapp.com/api/notes/${_id}`, formData, {
+                        headers: {
+                            "x-auth": localStorage.getItem('token')
+                        }
+                    })
+                        .then((response) => {
+                            const result = response.data
+                            dispatch(editNote(result))
+                            toggle()
+                            swal("Your Changes Saved Successfuly", {
+                                icon: "success",
+                            });
+                        })
+                        .catch((err) => {
+                            swal(err.message, {
+                                icon: 'error'
+                            })
+                        })
+
+                    // Async call for edit notes
+                }
+            });
+
     }
 }

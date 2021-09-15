@@ -26,10 +26,8 @@ const NotesItem = (props) => {
 
     // Delete functionality
     const deleteItem = () => {
-        const deleteConfirm = window.confirm('Are you Sure?')
-        deleteConfirm && (
-            dispatch(asyncDeleteNote(_id))
-        )
+        // const deleteConfirm = window.confirm('Are you Sure?')
+        dispatch(asyncDeleteNote(_id))
     }
 
     // sweet alert
