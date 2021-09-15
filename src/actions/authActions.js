@@ -3,7 +3,7 @@ import axios from 'axios'
 // Registration data api action
 export const asyncRegistration = (formData, redirect) => {
     return () => {
-        axios.post('http://dct-user-auth.herokuapp.com/users/register', formData)
+        axios.post('https://dct-user-auth.herokuapp.com/users/register', formData)
             .then((response) => {
                 const result = response.data
                 if (result.hasOwnProperty('errors')) {
@@ -53,7 +53,7 @@ const userUpdaterAction = (data) => {
 // account user detail of logged in
 export const asyncAccount = (redirect) => {
     return (dispatch) => {
-        axios.get('http://dct-user-auth.herokuapp.com/users/account', {
+        axios.get('https://dct-user-auth.herokuapp.com/users/account', {
             headers: {
                 'x-auth': localStorage.getItem('token')
             }
