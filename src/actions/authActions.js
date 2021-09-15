@@ -1,4 +1,5 @@
 import axios from 'axios'
+import swal from 'sweetalert'
 
 // Registration data api action
 export const asyncRegistration = (formData, redirect) => {
@@ -7,14 +8,20 @@ export const asyncRegistration = (formData, redirect) => {
             .then((response) => {
                 const result = response.data
                 if (result.hasOwnProperty('errors')) {
-                    alert(result.message)
+                    swal(result.message, {
+                        icon: 'error'
+                    })
                 } else {
-                    alert('you have Successfully Registered')
+                    swal('you have Successfully Registered', {
+                        icon: 'success'
+                    })
                     redirect()
                 }
             })
             .catch((err) => {
-                console.log(err)
+                swal(err.message, {
+                    icon: 'error'
+                })
             })
     }
 }
@@ -26,16 +33,22 @@ export const startLogin = (formData, redirect, handleAuth) => {
             .then((response) => {
                 const result = response.data
                 if (result.hasOwnProperty('errors')) {
-                    alert(result.errors)
+                    swal(result.errors, {
+                        icon: 'error'
+                    })
                 } else {
-                    alert('you have successfully Logged In')
+                    swal('you have successfully Logged In', {
+                        icon: 'success'
+                    })
                     localStorage.setItem('token', result.token)
                     redirect()
                     handleAuth()
                 }
             })
             .catch((err) => {
-                alert(err)
+                swal(err.message, {
+                    icon: 'error'
+                })
             })
     }
 }
@@ -64,7 +77,9 @@ export const asyncAccount = (redirect) => {
                 dispatch(userUpdaterAction(result))
             })
             .catch((err) => {
-                alert(err.message)
+                swal(err.message, {
+                    icon: 'error'
+                })
                 redirect()
             })
     }
