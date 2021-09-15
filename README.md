@@ -24,17 +24,17 @@ You can see live Demo [Preview](https://upbeat-lamport-0cd3d1.netlify.app)
 
 ## FEATURES
 
- + Backend 
+ ### Backend 
   - Backend is created with nodeJs ,Built by DCT Academy.
   - Reactjs Used for implementing server side manipulation.
 
- + Authentication 
+ ### Authentication 
   - Authentication is implemented.
   - User can Sign up or login.
   - Routing to login page after Sign up.
   - Custom Client side Validation.
 
-  + My Notes
+  ### My Notes
    - User can see the list of all Notes.
    - On click in notes user can view full notes Details.
    - User can add new notes.
